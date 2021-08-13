@@ -17,7 +17,7 @@ public class LogginScreen    {
     public Button btnOK;
 
     @FXML
-    public TextField unsername;
+    public TextField username;
 
     @FXML
     public TextField password;
@@ -33,13 +33,13 @@ public class LogginScreen    {
     @FXML
     public void handleButtonAction(ActionEvent event) throws NamingException {
 
-        String name = unsername.getText();
+        String name = username.getText();
         String pass = password.getText();
         String []result = authenticationLDAPService.authenticateLDAP(name,pass);
         if(!result[0].equals("ACESSO NEGADO")) {
             visor.setText(result[0]+"\n"+result[1]);
         }else{
-            visor.setText(result[0]);
+            visor.setText("ACESSO NEGADO,você não é da banda!");
         }
 
 

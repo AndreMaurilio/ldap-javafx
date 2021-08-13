@@ -18,9 +18,9 @@ public class AuthenticationLDAP implements AuthenticationLDAPService {
         if(!u.equals("")) {
             Properties props = new Properties();
             props.put(Context.INITIAL_CONTEXT_FACTORY,"com.sun.jndi.ldap.LdapCtxFactory");
-            props.put(Context.PROVIDER_URL, PropertiesUtil.getValue(ProcessorProperty.LDAP_SERVER));
+            props.put(Context.PROVIDER_URL,ProcessorProperty.LDAP_SERVER.getKey());
             props.put(Context.SECURITY_AUTHENTICATION, "simple");
-            String dns = "CN="+u+","+PropertiesUtil.getValue(ProcessorProperty.LDAP_SECURITY_PRINCIPAL);
+            String dns = "CN="+u+","+ProcessorProperty.LDAP_SECURITY_PRINCIPAL.getKey();
             props.put(Context.SECURITY_PRINCIPAL,dns);
             props.put(Context.SECURITY_CREDENTIALS, password);
 
@@ -28,9 +28,9 @@ public class AuthenticationLDAP implements AuthenticationLDAPService {
                 InitialDirContext context = new InitialDirContext(props);
 
                 SearchControls ctrls = new SearchControls();
-                String seachFilter = "(sAMAccountName="+username+")";
+                String seachFilter = "(displayName="+username+")";
                 ctrls.setSearchScope(SearchControls.SUBTREE_SCOPE);
-                ctrls.setReturningAttributes(new String[] {"deion","displayName"});
+                ctrls.setReturningAttributes(new String[] {"description","displayName"});
 
 //            String path = ("cn=" + username + ",ou="+u.getValue()+",ou=system,dc=pratice,dc=net");
 
@@ -42,7 +42,7 @@ public class AuthenticationLDAP implements AuthenticationLDAPService {
                 while (answers.hasMore()) {
                     result = (SearchResult) answers.next();
                     Attributes attributes = result.getAttributes();
-                    Attribute attribute = attributes.get("deion");
+                    Attribute attribute = attributes.get("description");
                     Attribute attribute2 = attributes.get("displayName");
                     atributes[0]=inCategory(attribute.get().toString());
                     atributes[1]=attribute2.get().toString();
@@ -69,20 +69,20 @@ public class AuthenticationLDAP implements AuthenticationLDAPService {
 
 
     public String inCategory(String category){
-        if(category.equals("Setor - Desenvolvimento")) {
-            return "dev";
+        if(category.equals("Vocalista")) {
+            return "Hey ho let's go Joe!";
         }
-        else if(category.equals("Setor - Processamento")) {
-            return "admin";
+        else if(category.equals("Baixista")) {
+            return "Hey ho let's go DeeDee!";
 
         }
-        else if(category.equals("Setor - SAC")) {
-            return "admin";
+        else if(category.equals("Guitarrista")) {
+            return "Hey ho let's go Johnny!";
         }
-        else if(category.equals("Setor - Gestão de Contratos")) {
-            return "admin";
+        else if(category.equals("Bateirista")) {
+            return "Hey ho let's go Mark!";
         }
-        return "ACESSO NEGADO";
+        return "ACESSO NEGADO,você não é da banda!";
 
 
     }
@@ -99,12 +99,10 @@ public class AuthenticationLDAP implements AuthenticationLDAPService {
         String id = "";
         Properties props = new Properties();
         props.put(Context.INITIAL_CONTEXT_FACTORY, "com.sun.jndi.ldap.LdapCtxFactory");
-        props.put(Context.PROVIDER_URL, PropertiesUtil.getValue(ProcessorProperty.LDAP_SERVER));
+        props.put(Context.PROVIDER_URL, ProcessorProperty.LDAP_SERVER.getKey());
         props.put(Context.SECURITY_AUTHENTICATION, "simple");
-        String dns = "OU=Usuarios,OU=Dominio,DC=Dominio,DC=local";
-        String dn = "CN=integration,OU=Usuarios,OU=Dominio,DC=Dominio,DC=local";
-        props.put(Context.SECURITY_PRINCIPAL, PropertiesUtil.getValue(ProcessorProperty.LDAP_SECURITY_PRINCIPAL_USER));
-        props.put(Context.SECURITY_CREDENTIALS, PropertiesUtil.getValue(ProcessorProperty.LDAP_PASSWORD));
+        props.put(Context.SECURITY_PRINCIPAL, ProcessorProperty.LDAP_SECURITY_PRINCIPAL_USER.getKey());
+        props.put(Context.SECURITY_CREDENTIALS, ProcessorProperty.LDAP_PASSWORD.getKey());
 
         NamingEnumeration results = null;
         DirContext ctx = new InitialDirContext(props);
@@ -112,7 +110,7 @@ public class AuthenticationLDAP implements AuthenticationLDAPService {
 
         SearchControls search = new SearchControls();
         search.setSearchScope(SearchControls.SUBTREE_SCOPE);
-        results = ctx.search(PropertiesUtil.getValue(ProcessorProperty.LDAP_SECURITY_PRINCIPAL), "(objectClass=user)", search);
+        results = ctx.search(ProcessorProperty.LDAP_SECURITY_PRINCIPAL.getKey(), "(objectClass=uidObject)", search);
 //        results = ctx.search("OU=Dominio,DC=Dominio,DC=local", "(&(objectClass=user)(memberOf=" + dns + "))", search);
 
 
@@ -120,8 +118,9 @@ public class AuthenticationLDAP implements AuthenticationLDAPService {
             SearchResult searchResult = (SearchResult) results.next();
             Attributes attributes = searchResult.getAttributes();
             //Attribute attrCN = attributes.get("CN").toString(); //capturando o CommonName do usuário
-            Attribute attrSams = attributes.get("sAMAccountName");
-            if (attrSams.get().toString().equals(username)) id = attributes.get("CN").get().toString();
+//            Attribute attrSams = attributes.get("sAMAccountName");
+            Attribute attrSams = attributes.get("displayName");
+            if (attrSams.get().toString().equals(username)) id = attributes.get("cn").get().toString();
         }
         ctx.close();
 
