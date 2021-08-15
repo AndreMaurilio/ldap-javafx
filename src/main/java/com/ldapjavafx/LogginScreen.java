@@ -5,6 +5,7 @@ import com.ldapjavafx.authentication.AuthenticationLDAPService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
@@ -20,7 +21,7 @@ public class LogginScreen    {
     public TextField username;
 
     @FXML
-    public TextField password;
+    public PasswordField password;
 
     @FXML
     public TextArea visor;
