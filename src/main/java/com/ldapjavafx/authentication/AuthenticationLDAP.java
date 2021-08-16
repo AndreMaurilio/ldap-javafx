@@ -81,7 +81,7 @@ public class AuthenticationLDAP implements AuthenticationLDAPService {
         else if(category.equals("Guitarrista")) {
             return "Hey ho let's go Johnny!";
         }
-        else if(category.equals("Bateirista")) {
+        else if(category.equals("Baterista")) {
             return "Hey ho let's go Mark!";
         }
         return "ACESSO NEGADO,você não é da banda!";

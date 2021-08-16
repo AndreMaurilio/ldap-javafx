@@ -22,7 +22,7 @@ services:
       - LDAP_TLS_KEY_FILENAME=server.key
       - LDAP_TLS_CA_CRT_FILENAME=javaldap.com.ca.crt
       - LDAP_READONLY_USER=true
-      - LDAP_READONLY_USER_USERNAME=user-comum
+      - LDAP_READONLY_USER_USERNAME=user
       - LDAP_READONLY_USER_PASSWORD=123
     networks:
       - openldap
