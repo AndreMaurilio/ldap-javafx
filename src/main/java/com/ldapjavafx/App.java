@@ -27,7 +27,7 @@ public class App extends Application {
 
         Parent scene = FXMLLoader.load(getClass().getResource("/logginscreen.fxml"));
 
-        stage.setScene(new Scene(scene,400,400));
+        stage.setScene(new Scene(scene,600,600));
         stage.setTitle("Ramones Login");
         stage.show();
     }

@@ -5,4 +5,6 @@ public interface PropertyEnum {
     String getFileName();
 
     String getKey();
+
+    String getImage();
 }
